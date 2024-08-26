@@ -1,3 +1,4 @@
+import Category from "@/components/organisms/category";
 import Client from "@/components/organisms/clients";
 import Hero from "@/components/organisms/hero";
 
@@ -6,6 +7,7 @@ export default function Home() {
     <div className="px-32 mb-10">
       <Hero />
       <Client />
+      <Category />
     </div>
   );
 }
