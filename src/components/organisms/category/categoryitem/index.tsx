@@ -9,7 +9,7 @@ interface CategoryItemProps {
  
 const CategoryItem: FC<CategoryItemProps> = ({ name, totalJob}) => {
     return (  
-        <div className="border border-border p-8 cursor-pointer transition-colors group hover:border-primary hover:bg-primary hover:text-white">
+        <div className="border border-border rounded-lg p-8 cursor-pointer transition-colors group hover:border-primary hover:bg-primary hover:text-white">
             <BiCategory className="w-12 h-12 text-primary group-hover:text-white" />
             <div className="mt-7 ">
                 <div className="text-2xl font-semibold">
