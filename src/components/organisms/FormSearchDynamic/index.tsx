@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { LOCATION_OPTIONS } from "@/constants";
+import { optionType } from "@/types";
 import { FC } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -20,13 +22,13 @@ const FormSearchDynamic: FC<FormSearchDynamicProps> = () => {
                     <div className="inline-flex gap-3 items-center">
                         <HiOutlineLocationMarker className="w-6 h-6 " />
                         <Select>
-                            <SelectTrigger className="w-[300px] border-none text-gray-500 outline-none py-5">
+                            <SelectTrigger className="w-[350px] border-none text-gray-500 outline-none py-5">
                                 <SelectValue placeholder="Select a location" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="light">Light</SelectItem>
-                                <SelectItem value="dark">Dark</SelectItem>
-                                <SelectItem value="system">System</SelectItem>
+                                {LOCATION_OPTIONS.map((item: optionType, i: number) => (
+                                    <SelectItem key={i} value={item.id}>{item.label}</SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                     </div>
