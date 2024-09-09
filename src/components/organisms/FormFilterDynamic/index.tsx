@@ -1,47 +1,24 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { FC } from "react";
 import CheckBoxForms from "./CheckBoxForms";
+import { filterFormType } from "@/types";
+import { Button } from "@/components/ui/button";
 
 interface FormFilterDynamicProps {
     formFilter: any;
     onSubmitFilter: (val: any) => Promise<void>
-    filterForms: any[]
+    filterForms: filterFormType[];
 }
 
-const items = [
-    {
-      id: "recents",
-      label: "Recents",
-    },
-    {
-      id: "home",
-      label: "Home",
-    },
-    {
-      id: "applications",
-      label: "Applications",
-    },
-    {
-      id: "desktop",
-      label: "Desktop",
-    },
-    {
-      id: "downloads",
-      label: "Downloads",
-    },
-    {
-      id: "documents",
-      label: "Documents",
-    },
-  ];
- 
 const FormFilterDynamic: FC<FormFilterDynamicProps> = ({ formFilter, onSubmitFilter, filterForms}) => {
     return ( 
         <Form {...formFilter}>
             <form onSubmit={formFilter.handleSubmit(onSubmitFilter)}>
-                <CheckBoxForms formFilter={formFilter} items={items} label="Categories" name="categories"/>
+                {filterForms.map((item: filterFormType, i: number) => (
+                    <CheckBoxForms key={i} formFilter={formFilter} items={item.items} label={item.label} name={item.name}/>
+                ))}
+                <Button className="mt-5 w-full">Apply Filter</Button>
+                <Button variant="outline" className="mt-3 w-full">Reset Filter</Button>
             </form>
         </Form>
      );
