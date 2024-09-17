@@ -26,7 +26,21 @@ const dataDummy: CompanyType[] = [
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, porro? Iusto nam error doloribus possimus, rem velit alias placeat ullam suscipit ipsum tenetur blanditiis quia accusamus nostrum ex hic? Dolorum aliquam et distinctio temporibus recusandae. Nam harum placeat dicta, quas, suscipit consequatur debitis natus perferendis ducimus accusamus minima sapiente rerum? Consequatur cum nostrum beatae unde possimus rem recusandae reiciendis, voluptates at sit odio veritatis incidunt eum aut quidem? Nobis ipsum possimus quod reiciendis atque dolore perferendis cum nihil quis eligendi vitae fugiat, temporibus ad magnam facere deleniti! Magnam praesentium deserunt est ullam. Hic eaque minima pariatur harum dolor, incidunt natus!",
         name: "Twitter",
         totalJobs: 10
-    }
+    },
+    {
+        image: "/images/company2.png",
+        categories: "Marketing",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, porro? Iusto nam error doloribus possimus, rem velit alias placeat ullam suscipit ipsum tenetur blanditiis quia accusamus nostrum ex hic? Dolorum aliquam et distinctio temporibus recusandae. Nam harum placeat dicta, quas, suscipit consequatur debitis natus perferendis ducimus accusamus minima sapiente rerum? Consequatur cum nostrum beatae unde possimus rem recusandae reiciendis, voluptates at sit odio veritatis incidunt eum aut quidem? Nobis ipsum possimus quod reiciendis atque dolore perferendis cum nihil quis eligendi vitae fugiat, temporibus ad magnam facere deleniti! Magnam praesentium deserunt est ullam. Hic eaque minima pariatur harum dolor, incidunt natus!",
+        name: "Twitter",
+        totalJobs: 10
+    },
+    {
+        image: "/images/company2.png",
+        categories: "Marketing",
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure, porro? Iusto nam error doloribus possimus, rem velit alias placeat ullam suscipit ipsum tenetur blanditiis quia accusamus nostrum ex hic? Dolorum aliquam et distinctio temporibus recusandae. Nam harum placeat dicta, quas, suscipit consequatur debitis natus perferendis ducimus accusamus minima sapiente rerum? Consequatur cum nostrum beatae unde possimus rem recusandae reiciendis, voluptates at sit odio veritatis incidunt eum aut quidem? Nobis ipsum possimus quod reiciendis atque dolore perferendis cum nihil quis eligendi vitae fugiat, temporibus ad magnam facere deleniti! Magnam praesentium deserunt est ullam. Hic eaque minima pariatur harum dolor, incidunt natus!",
+        name: "Twitter",
+        totalJobs: 10
+    },
 ];
 
 
