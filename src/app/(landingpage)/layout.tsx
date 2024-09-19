@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Epilogue } from "next/font/google";
-import "./globals.css";
-import Image from "next/image";
+import "../globals.css";
 import Navbar from "@/components/layouts/navbar";
 import Footer from "@/components/layouts/footer";
 
