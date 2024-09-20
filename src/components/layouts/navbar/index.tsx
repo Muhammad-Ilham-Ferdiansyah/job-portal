@@ -29,7 +29,7 @@ const router = useRouter();
             </div>
             <div className="inline-flex items-center gap-4 h-8">
                 <Button onClick={() => router.push('/signin')} variant="link">Login</Button>
-                <Button>Sign Up</Button>
+                <Button onClick={() => router.push('/signup')} >Sign Up</Button>
             </div>
         </header>
      );
