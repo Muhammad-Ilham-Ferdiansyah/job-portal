@@ -15,8 +15,6 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = () => {
     const router = useRouter();
     const { data: session } = useSession();
-
-    console.log(session);
     return ( 
         <header className="px-32 py-5 flex flex-row items-start justify-between">
             <div className="inline-flex items-center gap-12">
