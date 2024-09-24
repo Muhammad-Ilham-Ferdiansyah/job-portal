@@ -31,17 +31,16 @@ const SignInPage: FC<SignInPageProps> = ({}) => {
             redirect: false
         })
 
-        console.log(authenticated);
-
         if (authenticated?.error){
             toast({
+                variant: "destructive",
                 title: "Error",
                 description: "Email or Password maybe wrong"
             })
             return;
         }
 
-        router.push('/');
+        await router.push('/');
     }
 
     return ( 
