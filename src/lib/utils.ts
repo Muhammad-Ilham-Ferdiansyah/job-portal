@@ -62,7 +62,8 @@ export const parsingFeaturedJobs = async (data: any, isLoading: boolean, error: 
           image: imageUrl,
           location: item.Company?.CompanyDetail[0]?.location,
           needs: item.needs,
-          type: item.CategoryJob.name
+          type: item.CategoryJob.name,
+          skills: item.requiredSkills
         }
         return featuredJobs
       })

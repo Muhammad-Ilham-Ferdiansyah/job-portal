@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface JobItemProps extends JobType {}
  
-const JobItem: FC<JobItemProps> = ({ image, jobType, name, type, location, desc, categories }) => {
+const JobItem: FC<JobItemProps> = ({ image, jobType, name, type, location, desc, categories, skills }) => {
     return ( 
         <div className="border border-border rounded-lg p-6 cursor-pointer">
             <div className="flex flex-row justify-between items-start">
@@ -23,7 +23,9 @@ const JobItem: FC<JobItemProps> = ({ image, jobType, name, type, location, desc,
                 </div>
             </div>
             <div className="space-x-2">
-                <Badge variant="outline" className="rounded border-primary bg-primary/5 text-primary">{categories.name}</Badge>
+                {skills.map((item: string, i: number) => (
+                    <Badge key={item + i} variant="outline" className="rounded border-primary bg-primary/5 text-primary">{item}</Badge>
+                ))}
             </div>
         </div>
      );

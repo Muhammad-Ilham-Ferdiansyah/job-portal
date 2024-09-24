@@ -15,6 +15,7 @@ export type JobType = {
     categories: categoryJobType;
     needs: number;
     applicants: number;
+    skills: string[];
 }
 
 export type optionType = {
