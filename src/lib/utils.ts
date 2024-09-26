@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import bcrypt from "bcryptjs"
-import { categoryJobType, JobType } from "@/types"
+import { categoryJobType, JobType, optionType } from "@/types"
 import { supabasePublicUrl } from "./supabase"
 
 export function cn(...inputs: ClassValue[]) {
@@ -68,6 +68,18 @@ export const parsingFeaturedJobs = async (data: any, isLoading: boolean, error: 
         return featuredJobs
       })
     )
+  }
+  return []
+}
+
+export const parsingCategoriesToOptions = (data: any, isLoading: boolean, error: any) => {
+  if (!isLoading && !error && data) {
+    return data.map((item: any) => {
+      return {
+        id: item.id,
+        label: item.name
+      } as optionType
+    }) as optionType[]
   }
   return []
 }
