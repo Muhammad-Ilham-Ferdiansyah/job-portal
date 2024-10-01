@@ -6,7 +6,7 @@ import { FC } from "react";
 
 interface CompanyCardProps extends CompanyType {}
  
-const CompanyCard: FC<CompanyCardProps> = ({ categories, description, image, name, totalJobs}) => {
+const CompanyCard: FC<CompanyCardProps> = ({ industry, description, image, name, totalJobs}) => {
     const router = useRouter()
     return ( 
         <div onClick={()=>router.push('/detail/company/1')} className="border border-border p-6 cursor-pointer">
@@ -16,10 +16,10 @@ const CompanyCard: FC<CompanyCardProps> = ({ categories, description, image, nam
             </div>
             <div className="my-4">
                 <div className="text-lg font-semibold mb-2">{name}</div>
-                <div className="line-clamp-3 text-sm text-muted-foreground">{description}</div>
+                <div className="line-clamp-3 text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: description }}></div>
             </div>
             <div className="space-x-2">
-                <Badge variant="outline">{categories}</Badge>
+                <Badge variant="outline">{industry}</Badge>
             </div>
         </div>
      );
