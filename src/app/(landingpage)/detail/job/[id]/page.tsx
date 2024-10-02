@@ -1,11 +1,9 @@
 import FormModalApply from "@/components/organisms/FormModalApply";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
 import { BiCategory } from "react-icons/bi";
 import prisma from "../../../../../../lib/prisma";
 import { supabasePublicUrl } from "@/lib/supabase";
@@ -65,7 +63,7 @@ const DetailJobPage = async ({params} : {params: {id: string}}) => {
                             </div>
                         </div>
                     </div>
-                    <FormModalApply />
+                    <FormModalApply id={data.id!!} image={data.image} roles={data.roles!!} jobType={data.jobType!!} location={data?.Company?.CompanyDetail[0].location!!} />
                 </div>
             </div>
             <div className="px-32 py-16 flex flex-row items-start gap-10">
@@ -170,7 +168,7 @@ const DetailJobPage = async ({params} : {params: {id: string}}) => {
                 </div>
                 <div className="grid grid-cols-5 gap-5">
                     {data?.benefits?.map((item: any, i: number) => (
-                        <div key={item}>
+                        <div key={item + i}>
                             <BiCategory className="w-12 h-12 text-primary" />
                             <div className="font-semibold text-xl mt-6">
                                 {item.benefit}

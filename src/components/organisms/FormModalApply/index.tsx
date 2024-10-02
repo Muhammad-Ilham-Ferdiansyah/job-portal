@@ -3,9 +3,6 @@ import { FC } from "react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button";
@@ -18,39 +15,101 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import UploadField from "../UploadField";
+import { useSession } from "next-auth/react";
+import { z } from "zod";
+import { supabaseUploadFile } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 interface FormModalApplyProps {
-    
+    id: string | undefined;
+    image: string | undefined;
+    roles: string | undefined;
+    location: string | undefined;
+    jobType: string | undefined;
 }
  
-const FormModalApply: FC<FormModalApplyProps> = ({}) => {
+const FormModalApply: FC<FormModalApplyProps> = ({ id, image, roles, jobType, location }) => {
     const form = useForm<z.infer<typeof formApplySchema>>({
         resolver: zodResolver(formApplySchema),
     });
 
-    const onSubmit = (val: z.infer<typeof formApplySchema>) => {
-        console.log(val);
+    const {toast} = useToast();
+
+    const router = useRouter();
+
+    const { data: session } = useSession();
+
+    const onSubmit = async (val: z.infer<typeof formApplySchema>) => {
+        try {
+            const {filename, error} = await supabaseUploadFile(val.resume, 'applicant')
+
+            const requestData = {
+                userId: session?.user.id,
+                jobId: id,
+                resume: filename,
+                coverLetter: val.coverLetter,
+                linkedin: val.linkedIn,
+                phone: val.phone,
+                email: val.email,
+                portfolio: val.portfolio,
+                previousJobTitle: val.previousJobTitle,
+            };
+
+            if (error) {
+                throw "Error";
+            }
+
+            console.log(requestData);
+
+            await fetch('/api/job/apply', {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(requestData)
+            })
+
+            await toast({
+                title: "Success",
+                description: "Apply Job Success"
+            });
+
+            router.replace('/');
+
+        } catch (error) {
+            console.log(error);
+            toast({
+                title: "Error",
+                variant: "destructive",
+                description: "Please Try Again Later"
+            })
+        }
     }
 
     return ( 
         <Dialog>
             <DialogTrigger asChild>
-            <Button size="lg" className="text-lg px-12 py-6">
-                Apply
-            </Button>
+                {session ? (
+                        <Button size="lg" className="text-lg px-12 py-6">
+                            Apply
+                        </Button>
+                ) : (
+                    <Button variant="outline" disabled>
+                        Sign In First
+                    </Button>
+                )}
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <div>
                     <div className="inline-flex items-center gap-4">
                         <div>
-                            <Image src="/images/company2.png" alt="/images/company2.png" width={60} height={60} />
+                            <Image src={image!!} alt={image!!} width={60} height={60} />
                         </div>
                         <div>
                             <div className="text-lg font-semibold">
-                                Social Media Assistant
+                                {roles}
                             </div>
                             <div className="text-gray-500">
-                                Agency . Paris, France . Full-Time
+                                {location} . {jobType}
                             </div>
                         </div>
                     </div>

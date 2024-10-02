@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Applicant {
-  id               String  @id
+  id               String  @id @default(cuid())
   userId           String?
   jobId            String?
   previousJobTitle String
@@ -17,6 +17,7 @@ model Applicant {
   portfolio        String
   coverLetter      String
   resume           String
+  email            String
   Job              Job?    @relation(fields: [jobId], references: [id])
   User             User?   @relation(fields: [userId], references: [id])
 }
