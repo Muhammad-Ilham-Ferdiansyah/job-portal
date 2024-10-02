@@ -6,10 +6,10 @@ import { FC } from "react";
 
 interface CompanyCardProps extends CompanyType {}
  
-const CompanyCard: FC<CompanyCardProps> = ({ industry, description, image, name, totalJobs}) => {
+const CompanyCard: FC<CompanyCardProps> = ({ id, industry, description, image, name, totalJobs}) => {
     const router = useRouter()
     return ( 
-        <div onClick={()=>router.push('/detail/company/1')} className="border border-border p-6 cursor-pointer">
+        <div onClick={()=>router.push('/detail/company/'+id)} className="border border-border p-6 cursor-pointer">
             <div className="flex flex-row justify-between items-start">
                 <Image src={image} alt={image} width={66} height={66} />
                 <Badge>{totalJobs} Jobs</Badge>
