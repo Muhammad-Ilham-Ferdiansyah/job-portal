@@ -7,30 +7,61 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { BiCategory } from "react-icons/bi";
+import prisma from "../../../../../../lib/prisma";
+import { supabasePublicUrl } from "@/lib/supabase";
+import { dateFormat } from "@/lib/utils";
 
-interface DetailJobPageProps {
-    
+
+async function getDetailJob(id: string) {
+    const data = await prisma.job.findFirst({
+        where: {
+            id
+        },
+        include: {
+            Company: {
+                include: {
+                    CompanyDetail: true
+                }
+            },
+            CategoryJob: true
+        }
+    });
+
+    let imageUrl;
+
+    if (data?.Company?.CompanyDetail[0].image){
+        imageUrl = await supabasePublicUrl(data.Company.CompanyDetail[0].image, 'company')
+    } else {
+        imageUrl = '/images/company2.png';
+    }
+
+    const applicants = data?.applicants || 0;
+    const needs     = data?.needs || 0;
+
+    return {...data, image: imageUrl, applicants, needs};
 }
- 
-const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
+
+const DetailJobPage = async ({params} : {params: {id: string}}) => {
+
+    const data = await getDetailJob(params.id);
     return (
        <>
              <div className="bg-slate-100 px-32 pt-10 pb-14">
                 <div className="inline-flex gap-3 text-sm text-muted-foreground">
                     <Link href='/' className="hover:underline hover:text-black">Home</Link> / {" "}
-                    <Link href='/find-companies' className="hover:underline hover:text-black">Companies</Link> / {" "}
-                    <Link href='/detail/company/1' className="hover:underline hover:text-black">Twitter</Link> / {" "}
-                    <Link href='/detail/job/1' className="hover:underline hover:text-black">Social Media Assistant</Link>
+                    <Link href='/find-jobs' className="hover:underline hover:text-black">Jobs</Link> / {" "}
+                    <Link href={`/detail/company/${data?.Company?.CompanyDetail[0].id}`} className="hover:underline hover:text-black">{data?.Company?.CompanyDetail[0].name}</Link> / {" "}
+                    <Link href={`/detail/job/${data?.id}`} className="hover:underline hover:text-black">{data?.roles}</Link>
                 </div>
                 <div className="bg-white shadow mt-10 p-5 w-11/12 mx-auto flex flex-row justify-between items-center">
                     <div className="inline-flex items-center gap-5">
-                        <Image src="/images/company2.png" alt="/images/company2.png" width={88} height={88} />
+                        <Image src={data.image} alt={data.image} width={88} height={88} />
                         <div>
                             <div className="text-2xl font-semibold">
-                                Social Media Assistant
+                                {data?.roles}
                             </div>
                             <div className="text-muted-foreground">
-                                Agency . Paris, France . Full-Time
+                                {data?.Company?.CompanyDetail[0].location} . {data?.jobType}
                             </div>
                         </div>
                     </div>
@@ -41,26 +72,22 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                 <div className="w-3/4">
                     <div className="mb-16">
                         <div className="text-3xl font-semibold mb-3">Description</div>
-                        <div className="text-muted-foreground">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid quos iste doloremque odio suscipit nesciunt in itaque iusto assumenda amet dignissimos accusantium praesentium, necessitatibus ipsa tempora facere ipsum aut non earum porro harum aperiam repudiandae nobis quibusdam. Amet explicabo voluptatum, quia sapiente consectetur soluta laudantium reprehenderit neque tempora molestias omnis?</p>
+                        <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: data?.description!! }}>
                         </div>
                     </div>
                     <div className="mb-16">
                         <div className="text-3xl font-semibold mb-3">Responsibilities</div>
-                        <div className="text-muted-foreground">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet maiores voluptatem amet, tempora quo obcaecati? Distinctio expedita, magni fuga ad, esse laudantium in voluptas necessitatibus reiciendis dignissimos voluptate aliquam maiores corporis debitis natus eligendi delectus nostrum perferendis atque veniam soluta commodi explicabo earum. Repellat dicta, esse ex odio voluptatem odit?</p>
+                        <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: data?.responsibility!! }}>
                         </div>
                     </div>
                     <div className="mb-16">
                         <div className="text-3xl font-semibold mb-3">Who You Are</div>
-                        <div className="text-muted-foreground">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem perferendis deleniti suscipit impedit, non modi cupiditate porro velit facilis ut laborum architecto fugit, inventore reiciendis sit ad enim, eos nostrum in natus corrupti. Doloremque nostrum, libero earum ut tenetur quasi, architecto quam quae repellat necessitatibus nam? Voluptas dolores quo a.</p>
+                        <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: data?.whoYouAre!! }}>
                         </div>
                     </div>
                     <div className="mb-16">
                         <div className="text-3xl font-semibold mb-3">Nice-To-Haves</div>
-                        <div className="text-muted-foreground">
-                            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatibus qui enim vel quisquam eius dignissimos cumque beatae, dolor vitae laudantium, atque suscipit quod placeat explicabo ratione neque reprehenderit itaque id quia numquam fuga fugiat quis dolorum autem? Assumenda vero et consequatur aut, ut natus ullam, labore laboriosam ab accusamus quae?</p>
+                        <div className="text-muted-foreground" dangerouslySetInnerHTML={{ __html: data?.niceToHave!! }}>
                         </div>
                     </div>
                 </div>
@@ -71,10 +98,10 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                         </div>
                         <div className="mt-6 p-4 bg-gray-50">
                             <div className="mb-2">
-                                <span className="font-semibold">5 Applied</span>
-                                <span className="text-gray-600"> of 10 capacity</span>
+                                <span className="font-semibold">{data?.applicants} Applied</span>
+                                <span className="text-gray-600"> of {data?.needs} capacity</span>
                             </div>
-                            <Progress value={50} className="[&>*]:bg-green-500" />
+                            <Progress value={(data?.applicants / data?.needs ) * 100} className="[&>*]:bg-green-500" />
                         </div>
                         <div className="mt-6 space-y-4">
                             <div className="flex flex-row justify-between">
@@ -82,7 +109,7 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                                     Apply Before
                                 </div>
                                 <div className="font-semibold">
-                                    Juli 31, 2024
+                                    {dateFormat(data?.dueDate!!)}
                                 </div>
                             </div>
                             <div className="flex flex-row justify-between">
@@ -90,7 +117,7 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                                     Job Post On
                                 </div>
                                 <div className="font-semibold">
-                                    Juli 31, 2024
+                                    {dateFormat(data?.datePosted!!)}
                                 </div>
                             </div>
                             <div className="flex flex-row justify-between">
@@ -98,7 +125,7 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                                     Job Type
                                 </div>
                                 <div className="font-semibold">
-                                    Full-Time
+                                    {data?.jobType}
                                 </div>
                             </div>
                             <div className="flex flex-row justify-between">
@@ -106,7 +133,7 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                                     Salary
                                 </div>
                                 <div className="font-semibold">
-                                    Rp. 5.000.000-Rp. 7.000.000
+                                    Rp. {data?.salaryFrom}-Rp. {data?.salaryTo}
                                 </div>
                             </div>
                             
@@ -116,7 +143,7 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                     <div>
                         <div className="text-3xl font-semibold">Category</div>
                         <div className="my-10 inline-flex gap-4">
-                            <Badge>Marketing</Badge>
+                            <Badge>{data?.CategoryJob?.name}</Badge>
                         </div>
                     </div>
 
@@ -124,8 +151,8 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                     <div>
                         <div className="text-3xl font-semibold">Required Skills</div>
                         <div className="my-10 inline-flex gap-4">
-                            {[0,1,2].map((item:number) => (
-                                <Badge variant="outline" key={item}>Marketing</Badge>
+                            {data?.requiredSkills?.map((item: string, i: number) => (
+                                <Badge variant="outline" key={item + i}>{item}</Badge>
                             ))}
                         </div>
                     </div>
@@ -142,14 +169,14 @@ const DetailJobPage: FC<DetailJobPageProps> = ({}) => {
                     </div>
                 </div>
                 <div className="grid grid-cols-5 gap-5">
-                    {[0,1,2].map((item: number) => (
+                    {data?.benefits?.map((item: any, i: number) => (
                         <div key={item}>
                             <BiCategory className="w-12 h-12 text-primary" />
                             <div className="font-semibold text-xl mt-6">
-                                Full Healthcare
+                                {item.benefit}
                             </div>
                             <div className="mt-3 text-sm text-gray-500">
-                                We believe in thriving communities and that starts with our team being happy and healthy.
+                                {item.description}
                             </div>
                         </div>
                     ))}

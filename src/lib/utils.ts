@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import bcrypt from "bcryptjs"
+import dayjs from "dayjs"
 import { categoryJobType, CompanyType, JobType, optionType } from "@/types"
 import { supabasePublicUrl } from "./supabase"
 
@@ -118,4 +119,8 @@ export const parsingCategoriesToOptions = (data: any, isLoading: boolean, error:
     }) as optionType[]
   }
   return []
+}
+
+export const dateFormat = (date: Date | string, format: string = 'DD MMM YYYY') => {
+  return dayjs(date).format(format);
 }
